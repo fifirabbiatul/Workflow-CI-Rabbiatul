@@ -34,8 +34,12 @@ def main():
         acc = accuracy_score(y_test, y_pred)
         print(f"Akurasi Model: {acc}")
 
-        # Simpan model secara manual dengan environment kita yang lebih longgar
-        mlflow.sklearn.log_model(model, "model", conda_env="conda.yaml")
+        # Simpan model secara manual dengan environment PIP (Bypass Anaconda)
+        mlflow.sklearn.log_model(
+            model, 
+            "model", 
+            pip_requirements=["pandas", "scikit-learn", "mlflow==2.19.0"]
+        )
 
         # Simpan Run ID ke sebuah file agar mudah dibaca oleh GitHub Actions (untuk proses build-docker)
         with open("run_id.txt", "w") as f:
