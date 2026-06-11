@@ -2,9 +2,9 @@ name: titanic-mlflow-env
 channels:
   - conda-forge
 dependencies:
-  - python=3.12.7
+  - python=3.12
   - pip
   - pip:
-      - pandas==2.2.3
-      - scikit-learn==1.5.2
+      - pandas
+      - scikit-learn
       - mlflow==2.19.0
