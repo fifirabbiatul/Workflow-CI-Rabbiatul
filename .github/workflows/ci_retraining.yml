@@ -57,9 +57,10 @@ jobs:
         run: |
           cd MLProject
           export MLFLOW_TRACKING_URI=sqlite:///mlflow.db
-          # Build docker image
-          mlflow models build-docker -m "runs:/${{ env.RUN_ID }}/model" -n ${{ secrets.DOCKER_USERNAME }}/titanic-model:latest
+          DOCKER_USER=$(echo "${{ secrets.DOCKER_USERNAME }}" | tr '[:upper:]' '[:lower:]')
+          mlflow models build-docker -m "runs:/${{ env.RUN_ID }}/model" -n $DOCKER_USER/titanic-model:latest
           
       - name: Push Docker Image to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/titanic-model:latest
+          DOCKER_USER=$(echo "${{ secrets.DOCKER_USERNAME }}" | tr '[:upper:]' '[:lower:]')
+          docker push $DOCKER_USER/titanic-model:latest
