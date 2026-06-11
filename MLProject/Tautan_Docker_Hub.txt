@@ -3,3 +3,4 @@ https://hub.docker.com/r/<DOCKER_USERNAME>/titanic-model
 
 Catatan:
 Ganti <DOCKER_USERNAME> dengan username akun Docker Hub Anda.
+ 
