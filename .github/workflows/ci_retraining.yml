@@ -58,7 +58,12 @@ jobs:
           cd MLProject
           export MLFLOW_TRACKING_URI=sqlite:///mlflow.db
           DOCKER_USER=$(echo "${{ secrets.DOCKER_USERNAME }}" | tr '[:upper:]' '[:lower:]')
-          mlflow models build-docker -m "runs:/${{ env.RUN_ID }}/model" -n $DOCKER_USER/titanic-model:latest
+          
+          # OPSI PAMUNGKAS: Kita minta MLflow membuatkan Dockerfile-nya, lalu kita build menggunakan Docker asli (CLI)
+          # Hal ini untuk mencegah "Timeout" 60 detik dari sistem Python milik MLflow yang sering gagal di tengah jalan.
+          mlflow models generate-dockerfile -m "runs:/${{ env.RUN_ID }}/model" -d mlflow-docker-context
+          cd mlflow-docker-context
+          docker build -t $DOCKER_USER/titanic-model:latest .
           
       - name: Push Docker Image to Docker Hub
         run: |
