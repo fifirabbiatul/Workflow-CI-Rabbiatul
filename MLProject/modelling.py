@@ -21,8 +21,8 @@ def main():
 
     X_train, X_test, y_train, y_test = load_data(data_path)
 
-    # Mengaktifkan autolog untuk menyimpan model secara otomatis
-    mlflow.autolog()
+    # Mengaktifkan autolog dimatikan agar kita bisa mengontrol conda_env secara manual
+    # mlflow.autolog()
 
     with mlflow.start_run(run_name="CI_Retraining_Run") as run:
         print("Melatih model RandomForest...")
@@ -33,6 +33,9 @@ def main():
         y_pred = model.predict(X_test)
         acc = accuracy_score(y_test, y_pred)
         print(f"Akurasi Model: {acc}")
+
+        # Simpan model secara manual dengan environment kita yang lebih longgar
+        mlflow.sklearn.log_model(model, "model", conda_env="conda.yaml")
 
         # Simpan Run ID ke sebuah file agar mudah dibaca oleh GitHub Actions (untuk proses build-docker)
         with open("run_id.txt", "w") as f:
